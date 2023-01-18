@@ -1,69 +1,62 @@
 #include "monty.h"
 
+/**
+ * is_digit - checkes if passed variable is digit
+ * @var: number to be checked
+ *
+ * Return: 1 if is digit, 0 otherwise
+ */
+int is_digit(char *var)
+{
+	int i = 0;
 
-
-
-
-global_t global = {EXIT_SUCCESS, NULL};
-
+	while (var[i])
+	{
+		if (var[i] == '-' && i++ == 0)
+			continue;
+		if (var[i] < '0' || var[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 
 /**
- *
- *  * main - starting point for monty interpreter
- *
- *   *
- *
- *    * @argc: arguement count
- *
- *     * @argv: list of arguement passed to the function
- *
- *      *
- *
- *       * Return: EXIT_SUCCESS on success, EXIT_FAILURE otherwise
- *
- *        */
-
-int main(int argc, char *argv[])
-
+ * add_new_node - adds a node to a stack
+ * @number: number value of the stack
+ * Return: nothing
+ */
+stack_t *add_new_node(int number)
 {
+	stack_t *new_node = malloc(sizeof(stack_t));
 
-		FILE *monty_fd = NULL;
-
-
-
-			if (argc != 2)
-
-					{
-
-								fprintf(stderr, "USAGE: monty file\n");
-
-										exit(EXIT_FAILURE);
-
-											}
-
-				monty_fd = fopen(argv[1], "r");
+	if (!new_node)
+	{
+		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
+	new_node->n = number;
+	new_node->prev = NULL;
+	new_node->next = NULL;
+	return (new_node);
+}
 
 
+/**
+ * stack_size - gets the size of a stack
+ * @stack: pointer to the stack
+ * Return: the size
+ */
+int stack_size(stack_t *stack)
+{
+	int i = 0;
+	stack_t *temp = stack;
 
-					if (!monty_fd)
-
-							{
-
-										fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
-
-												exit(EXIT_FAILURE);
-
-													}
-
-
-
-						global.err_status = exec_monty(monty_fd);
-
-							fclose(monty_fd);
-
-
-
-								exit(global.err_status);
-
+	while (temp != NULL)
+	{
+		i++;
+		temp = temp->next;
+	}
+	return (i);
 }
